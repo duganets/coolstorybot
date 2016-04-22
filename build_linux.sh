@@ -1,0 +1,1 @@
+env GOARC=386 GOOS=linux go build -o coolstorybot_linux
