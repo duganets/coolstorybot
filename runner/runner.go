@@ -166,6 +166,9 @@ func (sr *SurveysRunner) loadUsers() {
 		log.Print("loadUsers error, GetUsers failed", chErr)
 	} else {
 		for ui, u := range usersList {
+			if u.IsBot || u.ID == "USLACKBOT" {
+				continue
+			}
 			sr.users[u.ID] = &usersList[ui]
 			sr.usersByName[u.Name] = &usersList[ui]
 			sr.userId2Name[u.ID] = u.Name
