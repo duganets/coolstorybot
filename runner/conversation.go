@@ -79,7 +79,7 @@ func (conv *conversation) run() {
 					case <-conv.timeoutCancelCh:
 						log.Print("timer killed")
 						return
-					case <-time.After(time.Duration(3) * time.Minute):
+					case <-time.After(time.Duration(10) * time.Minute):
 						log.Printf("conversation [%s] timer triggered", conv.username)
 						conv.timeoutCh <- true
 					}
@@ -100,6 +100,7 @@ func (conv *conversation) run() {
 			log.Printf("conversation [%s] timed out ", conv.username)
 			if 0 < len(conv.itemsQ) {
 				curItem := conv.itemsQ[0]
+				conv.srunner.send(conversationMsgOut{conv.username, "истекло время ожидания ответа"})
 				conv.srunner.convDone(conversationItem{curItem.id, conv.username, "", "-", ""})
 				conv.itemsQ = conv.itemsQ[1:]
 			}
